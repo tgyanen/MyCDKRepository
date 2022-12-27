@@ -1,0 +1,113 @@
+Resources:
+  MyBucket1:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      ObjectLockConfiguration:
+        ObjectLockEnabled: Enabled
+        Rule:
+          DefaultRetention:
+            Days: 1
+            Mode: COMPLIANCE
+      ObjectLockEnabled: true
+    Metadata:
+      'aws:cdk:path': ObjectLockConfigurationPropertyStack/MyBucket1
+  CDKMetadata:
+    Type: 'AWS::CDK::Metadata'
+    Properties:
+      Analytics: >-
+        v2:deflate64:H4sIAAAAAAAA/zPSMzXTM1RMLC/WTU7J1s3JTNKrDi5JTM7WAQrFFxvrOaflOZUmZ6eW6ABZQanF+aVFyakgtnN+XkpmSWZ+Xq1OXn5Kql5WsX6ZoYWeuZ6BYlZxZqZuUWleSWZuql4QhAYA9bojU2kAAAA=
+    Metadata:
+      'aws:cdk:path': ObjectLockConfigurationPropertyStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Conditions:
+  CDKMetadataAvailable: !Or 
+    - !Or 
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - af-south-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-east-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-northeast-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-northeast-2
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-south-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-southeast-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ap-southeast-2
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - ca-central-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - cn-north-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - cn-northwest-1
+    - !Or 
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-central-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-north-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-south-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-west-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-west-2
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - eu-west-3
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - me-south-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - sa-east-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - us-east-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - us-east-2
+    - !Or 
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - us-west-1
+      - !Equals 
+        - !Ref 'AWS::Region'
+        - us-west-2
+Parameters:
+  BootstrapVersion:
+    Type: 'AWS::SSM::Parameter::Value<String>'
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: >-
+      Version of the CDK Bootstrap resources in this environment, automatically
+      retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert: !Not 
+          - 'Fn::Contains':
+              - - '1'
+                - '2'
+                - '3'
+                - '4'
+                - '5'
+              - !Ref BootstrapVersion
+        AssertDescription: >-
+          CDK bootstrap stack version 6 required. Please run 'cdk bootstrap'
+          with a recent version of the CDK CLI.
